@@ -19,8 +19,6 @@ SRC_URI += "\
 	crate-index://crates.io/${CARGO_INDEX_COMMIT} \
 "
 
-DEPENDS += "compiler-rt"
-
 RUSTLIB_DEP = ""
 inherit cargo
 

@@ -2,7 +2,7 @@ inherit rust-vars
 
 RUSTC = "rustc"
 
-RUSTC_ARCHFLAGS += "--target=${TARGET_SYS} ${RUSTFLAGS}"
+RUSTC_ARCHFLAGS += "--target=${RUST_TARGET_SYS} ${RUSTFLAGS}"
 
 def rust_base_dep(d):
     # Taken from meta/classes/base.bbclass `base_dep_prepend` and modified to

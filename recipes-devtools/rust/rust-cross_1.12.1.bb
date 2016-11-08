@@ -33,15 +33,17 @@ BUILD_POST_LINK_ARGS_append = " -Wl,-rpath=../../lib"
 # We need the same thing for the calls to the compiler when building the runtime crap
 TARGET_CC_ARCH_append = " --sysroot=${STAGING_DIR_TARGET}"
 
-do_configure () {
-}
-
 do_compile () {
+    oe_runmake \
+    ${RUST_TARGET_SYS}/rt/libcompiler-rt.a
 }
 
 do_install () {
 	mkdir -p ${D}${prefix}/${base_libdir_native}/rustlib
-	cp ${WORKDIR}/targets/${TARGET_SYS}.json ${D}${prefix}/${base_libdir_native}/rustlib
+	cp ${WORKDIR}/targets/${RUST_TARGET_SYS}.json ${D}${prefix}/${base_libdir_native}/rustlib
+
+    mkdir -p ${D}${libdir}
+    cp ${RUST_TARGET_SYS}/rt/libcompiler-rt.a ${D}${libdir}/libcompiler-rt.a
 }
 
 rust_cross_sysroot_preprocess() {
