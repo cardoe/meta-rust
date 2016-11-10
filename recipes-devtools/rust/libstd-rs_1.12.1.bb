@@ -30,5 +30,5 @@ do_compile_prepend () {
 
 do_install () {
     mkdir -p ${D}${rustlibdir}
-    cp ${B}/${TARGET_SYS}/release/deps/* ${D}${rustlibdir}
+    cp ${B}/${RUST_TARGET_SYS}/release/deps/* ${D}${rustlibdir}
 }

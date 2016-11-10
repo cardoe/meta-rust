@@ -54,8 +54,6 @@ do this.
 
 ## Pitfalls
 
- - TARGET_SYS _must_ be different from BUILD_SYS. This is due to the way configuration options are tracked for different targets.
-
 ## Dependencies
 
 On the host:

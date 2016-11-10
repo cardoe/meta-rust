@@ -361,9 +361,9 @@ do_configure () {
         "--enable-optimize-tests"           \
         "--release-channel=stable"          \
         "--prefix=${prefix}"                \
-        "--target=${TARGET_SYS}"            \
-        "--host=${HOST_SYS}"                \
-        "--build=${BUILD_SYS}"              \
+        "--target=${RUST_TARGET_SYS}"       \
+        "--host=${RUST_HOST_SYS}"           \
+        "--build=${RUST_BUILD_SYS}"         \
         "--localstatedir=${localstatedir}"  \
         "--sysconfdir=${sysconfdir}"        \
         "--datadir=${datadir}"              \

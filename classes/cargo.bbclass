@@ -55,11 +55,11 @@ cargo_do_configure () {
 }
 
 RUSTFLAGS ??= ""
-CARGO_BUILD_FLAGS = "-v --target ${HOST_SYS} --release"
+CARGO_BUILD_FLAGS = "-v --target ${RUST_HOST_SYS} --release"
 
 # This is based on the content of CARGO_BUILD_FLAGS and generally will need to
 # change if CARGO_BUILD_FLAGS changes.
-CARGO_TARGET_SUBDIR="${HOST_SYS}/release"
+CARGO_TARGET_SUBDIR="${RUST_HOST_SYS}/release"
 oe_cargo_build () {
 	export RUSTFLAGS="${RUSTFLAGS}"
 	bbnote "cargo = $(which cargo)"

@@ -40,8 +40,12 @@ do_compile () {
 }
 
 do_install () {
-	mkdir -p ${D}${prefix}/${base_libdir_native}/rustlib
-	cp ${WORKDIR}/targets/${TARGET_SYS}.json ${D}${prefix}/${base_libdir_native}/rustlib
+	# If the triple is built in, we do nothing. Otherwise we install it
+	${RUSTC} --print target-list | grep -q ${RUST_TARGET_SYS}
+	if [ $? -ne 0 ]; then
+		mkdir -p ${D}${prefix}/${base_libdir_native}/rustlib
+		cp ${WORKDIR}/targets/${RUST_TARGET_SYS}.json ${D}${prefix}/${base_libdir_native}/rustlib
+	fi
 }
 
 rust_cross_sysroot_preprocess() {

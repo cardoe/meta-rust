@@ -23,9 +23,9 @@ DISABLE_STATIC = ""
 do_configure () {
 	"${S}/configure" \
 		"--prefix=${prefix}"			\
-		"--build=${BUILD_SYS}"			\
-		"--host=${HOST_SYS}"			\
-		"--target=${TARGET_SYS}"		\
+		"--build=${RUST_BUILD_SYS}"		\
+		"--host=${RUST_HOST_SYS}"		\
+		"--target=${RUST_TARGET_SYS}"	\
 		"--localstatedir=${localstatedir}"	\
 		"--sysconfdir=${sysconfdir}"		\
 		"--datadir=${datadir}"			\
