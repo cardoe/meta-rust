@@ -9,9 +9,9 @@ IMAGE_INSTALL = " \
     rustfmt \
     "
 IMAGE_LINGUAS = " "
-
 LICENSE = "MIT"
 
 inherit core-image
 
+IMAGE_FSTYPES = "ext4"
 IMAGE_ROOTFS_SIZE ?= "8192"
