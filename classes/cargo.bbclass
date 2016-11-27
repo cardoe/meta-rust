@@ -27,8 +27,23 @@ export RUST_BACKTRACE = "1"
 # for cross compilation, so tell it we know better than it.
 export PKG_CONFIG_ALLOW_CROSS = "1"
 
-cargo_do_configure () {
-	mkdir -p ${CARGO_HOME}
+WRAPPER_DIR = "${WORKDIR}/wrapper"
+
+cargo_create_wrapper () {
+	cat <<- EOF > "${WRAPPER_DIR}/${HOST_PREFIX}rust-ccld"
+	#!/bin/sh
+	${CCLD} ${LDFLAGS} \$@
+	EOF
+	chmod +x "${WRAPPER_DIR}/${HOST_PREFIX}rust-ccld"
+
+	cat <<- EOF > "${WRAPPER_DIR}/${HOST_PREFIX}rust-cc"
+	#!/bin/sh
+	${CC} \$@
+	EOF
+	chmod +x "${WRAPPER_DIR}/${HOST_PREFIX}rust-cc"
+}
+
+cargo_create_config () {
 	echo "paths = [" > ${CARGO_HOME}/config
 	for p in ${EXTRA_OECARGO_PATHS}; do
 		printf "\"%s\"\n" "$p"
@@ -45,12 +60,23 @@ cargo_do_configure () {
 	local-registry = "/nonexistant"
 	EOF
 
-	echo "[target.${RUST_HOST_SYS}]" >> ${CARGO_HOME}/config
-	echo "linker = '${RUST_TARGET_CCLD}'" >> ${CARGO_HOME}/config
-	if [ "${RUST_HOST_SYS}" != "${RUST_BUILD_SYS}" ]; then
-		echo "[target.${RUST_BUILD_SYS}]" >> ${CARGO_HOME}/config
-		echo "linker = '${RUST_BUILD_CCLD}'" >> ${CARGO_HOME}/config
-	fi
+	# We need to use the real Yocto linker and get the linker
+	# flags to it. Yocto has the concept of BUILD and TARGET
+	# and uses HOST to be the currently selected one. So use
+	# wrapper scripts for each to ensure we get the right bits
+	# passed in.
+	cat <<- EOF >> ${CARGO_HOME}/config
+	[target.${RUST_HOST_SYS}]
+	linker = '${WRAPPER_DIR}/${HOST_PREFIX}rust-ccld'
+	EOF
+}
+
+cargo_do_configure () {
+	mkdir -p "${CARGO_HOME}"
+	mkdir -p "${WRAPPER_DIR}"
+
+	cargo_create_config
+	cargo_create_wrapper
 }
 
 RUSTFLAGS ??= ""
