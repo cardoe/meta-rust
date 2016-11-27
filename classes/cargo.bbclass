@@ -30,7 +30,6 @@ export PKG_CONFIG_ALLOW_CROSS = "1"
 cargo_do_configure () {
 	mkdir -p ${CARGO_HOME}
 	echo "paths = [" > ${CARGO_HOME}/config
-
 	for p in ${EXTRA_OECARGO_PATHS}; do
 		printf "\"%s\"\n" "$p"
 	done | sed -e 's/$/,/' >> ${CARGO_HOME}/config
@@ -46,10 +45,10 @@ cargo_do_configure () {
 	local-registry = "/nonexistant"
 	EOF
 
-	echo "[target.${HOST_SYS}]" >> ${CARGO_HOME}/config
+	echo "[target.${RUST_HOST_SYS}]" >> ${CARGO_HOME}/config
 	echo "linker = '${RUST_TARGET_CCLD}'" >> ${CARGO_HOME}/config
-	if [ "${HOST_SYS}" != "${BUILD_SYS}" ]; then
-		echo "[target.${BUILD_SYS}]" >> ${CARGO_HOME}/config
+	if [ "${RUST_HOST_SYS}" != "${RUST_BUILD_SYS}" ]; then
+		echo "[target.${RUST_BUILD_SYS}]" >> ${CARGO_HOME}/config
 		echo "linker = '${RUST_BUILD_CCLD}'" >> ${CARGO_HOME}/config
 	fi
 }
